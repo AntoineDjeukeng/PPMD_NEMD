@@ -231,6 +231,7 @@ int gro_channel_save(const t_topo *f0, const char *path)
 
 int gro_channel_load(t_topo *f0, const char *path)
 {
+    
     FILE *fp;
     char buf[512];
     double lx;
@@ -278,7 +279,8 @@ int gro_channel_update_or_load(t_topo *f0, const char *path)
 {
     gro_channel_update(f0);
     if (f0->sum.chan.axis == -1 && path) {
-        if (gro_channel_load(f0, path) == 0) return 0;
+        if (gro_channel_load(f0, path) == 0) 
+            return 0;
         return -1;
     }
     return 0;

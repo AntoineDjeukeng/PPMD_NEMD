@@ -50,7 +50,7 @@ typedef struct s_topo {
     int count_mol;
     t_summary sum;
 } t_topo;
-
+const char *tag_of(t_kind k);
 int  gro_parse(FILE *fp, t_topo *f0);
 void gro_free(t_topo *f0);
 

@@ -63,7 +63,32 @@ void* producer(void *arg)
 	// }
 
 
+    int i = 0;
 
+    // printf("=== Molecules per residue  ===\n");
+
+    // while (i < f0.sum.nsets) 
+    // {
+        
+    //     printf("%-5s atoms=%4d  molecules=%d  %s\n",
+    //            f0.sum.sets[i].name,
+    //            f0.sum.sets[i].natoms,
+    //            f0.sum.sets[i].nmol,
+    //            tag_of(f0.sum.sets[i].kind));
+    //     i = i + 1;
+    // }   
+    // print MolIDMOLNAM atomid atomname resid resname x y z
+    // topo.natoms = f0.natoms;
+    // topo.x = f0.x;
+    // topo.box[0] = f0.box[0];
+    // topo.box[1] = f0.box[1];
+    // topo.box[2] = f0.box[2];
+    // while (i < topo.natoms) {
+    //     printf("%8d %6s %6d %6s %8.3f %8.3f %8.3f\n",
+    //         i+1, "MOL", i+1, "RES",
+    //         topo.x[i].x, topo.x[i].y, topo.x[i].z);
+    //     i++;
+    // }
 
     k = 0;
     step = 0;
@@ -78,7 +103,7 @@ void* producer(void *arg)
         k = next_k(k);
         step++;
     }
-    int i = 0;
+    i = 0;
     while (1)
     {
         i++;
@@ -87,7 +112,8 @@ void* producer(void *arg)
         k = next_k(k);
         step++;
         sleep_ms(150);
-        if (i == 2) break;
+        if (i == 1) break;
+
     }
 
     gro_free(&f0);

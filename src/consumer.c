@@ -62,17 +62,19 @@ void* consumer(void *arg)
 
     idx = arg ? *(int*)arg : 0;
     topo_wait_global_copy(&topo);
-    gro_print_essentials(&topo);
     split_range(topo_count_mols(&topo), NUM_CONSUMERS, idx, &topo.start_mol, &topo.count_mol);
+    printf("C%d loaded topology: %d atoms, molecules %d to %d\n",
+           idx, topo.natoms, topo.start_mol, topo.start_mol + topo.count_mol - 1);
+    gro_print_essentials(&topo);
     seen_gen = 0;
     int i = 0;
     while (1) 
     {
         i++;
+        if (i == 1) break;
         printf("C%d processing molecules %d to %d\n", idx, topo.start_mol, topo.start_mol + topo.count_mol - 1);
         consume_once_subset(topo.start_mol, topo.count_mol, &topo, &seen_gen);
         sleep_ms(50);
-        if (i == 2) break;
     }
     return NULL;
 }

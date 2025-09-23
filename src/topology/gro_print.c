@@ -1,7 +1,7 @@
 #include "gro.h"
 #include <stdio.h>
 
-static const char *tag_of(t_kind k)
+const char *tag_of(t_kind k)
 {
     if (k == KIND_SOLVENT) return "[solvent]";
     if (k == KIND_ION) return "[ion]";

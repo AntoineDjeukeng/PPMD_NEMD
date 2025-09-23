@@ -1,5 +1,7 @@
 #include "pc.h"
 #include <stdio.h>
+#include <signal.h>
+
 
 
 static void start_threads(pthread_t *threads, int ac, char **av)
@@ -35,6 +37,7 @@ static void join_threads(pthread_t *threads)
 
 int main(int ac, char **av)
 {
+
     pthread_t threads[THREAD_COUNT];
 
     set_stdout_line_buffered();

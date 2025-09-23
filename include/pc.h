@@ -48,7 +48,7 @@ void        ring_ack(int k);
 int         ring_slot_for_gen(unsigned gen);
 unsigned    ring_slot_gen(int k);
 int         ring_slot_refs(int k);
-
+// #define static _Atomic int g_stop = 0;
 /* topology (from gro.h): t_topo */
 void        topo_build_from_traj(t_topo *dst, const t_frame *src);
 void        topo_copy(t_topo *dst, const t_topo *src);

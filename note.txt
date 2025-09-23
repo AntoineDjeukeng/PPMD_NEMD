@@ -1,0 +1,2 @@
+if natoms in gro = ntoms in xtc build the channel, save and continue
+if natoms - nothers in gro = natoms in xtc build the channel, save and con
