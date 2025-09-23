@@ -1,0 +1,15 @@
+build/
+traj
+*.o
+*.a
+*.so
+*.dylib
+*.log
+*.swp
+*.swo
+*.tmp
+.DS_Store
+.vscode/
+.idea/
+tags
+TAGS
