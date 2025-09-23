@@ -11,5 +11,6 @@ traj
 .DS_Store
 .vscode/
 .idea/
+data/
 tags
 TAGS

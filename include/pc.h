@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <stdatomic.h>
 #include <stddef.h>
+#include "gro.h"
 
 /* configuration */
 #define THREAD_COUNT 8
@@ -48,27 +49,19 @@ int         ring_slot_for_gen(unsigned gen);
 unsigned    ring_slot_gen(int k);
 int         ring_slot_refs(int k);
 
-/* topology */
-typedef struct s_vec3 { double x, y, z; } t_vec3;
-typedef struct s_summary { double v; } t_summary;
-typedef struct s_frame0 {
-    int     natoms;
-    t_vec3  box[3];
-    t_vec3 *x;
-    t_summary sum;
-} t_frame0;
-
-void        topo_build_from_traj(t_frame0 *dst, const t_frame *src);
-void        topo_copy(t_frame0 *dst, const t_frame0 *src);
-void        topo_free(t_frame0 *t);
-void        topo_publish_global(const t_frame0 *src);
-void        topo_wait_global_copy(t_frame0 *dst);
+/* topology (from gro.h): t_topo */
+void        topo_build_from_traj(t_topo *dst, const t_frame *src);
+void        topo_copy(t_topo *dst, const t_topo *src);
+void        topo_free(t_topo *t);
+void        topo_publish_global(const t_topo *src);
+void        topo_wait_global_copy(t_topo *dst);
+int         topo_count_mols(const t_topo *t);
 
 /* demo workload */
 void        fill_frame(t_frame *f, int step);
 void        process_frame(const t_frame *f);
 void        process_frame_subset(const t_frame *f,
-                                 const t_frame0 *topo,
+                                 const t_topo *topo,
                                  int start,
                                  int count);
 
@@ -80,5 +73,6 @@ void        set_stdout_line_buffered(void);
 void*       producer(void *arg);
 void*       consumer(void *arg);
 
-#endif
+/* runtime config */
 
+#endif

@@ -21,7 +21,7 @@ void process_frame(const t_frame *f)
            f->nframes, f->natoms, f->size, f->cap);
 }
 
-void process_frame_subset(const t_frame *f, const t_frame0 *topo, int start, int count)
+void process_frame_subset(const t_frame *f, const t_topo *topo, int start, int count)
 {
     int end;
     long long fr;
@@ -29,7 +29,7 @@ void process_frame_subset(const t_frame *f, const t_frame0 *topo, int start, int
 
     (void)f;
     fr = f ? f->nframes : 0;
-    tot = topo ? topo->natoms : 0;
+    tot = topo ? topo_count_mols(topo) : 0;
     if (start < 0)
         start = 0;
     if (count < 0)
@@ -37,6 +37,6 @@ void process_frame_subset(const t_frame *f, const t_frame0 *topo, int start, int
     end = start + count - 1;
     if (count == 0)
         end = -1;
-    printf("Consumer %lu frames=%lld atoms[%d..%d]/%d\n",
+    printf("Consumer %lu frames=%lld mols[%d..%d]/%d\n",
            (unsigned long)pthread_self(), fr, start, end, tot);
 }

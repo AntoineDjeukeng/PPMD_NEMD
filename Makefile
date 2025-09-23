@@ -35,8 +35,10 @@ SRCS := \
   $(SRC_DIR)/consumer.c \
   $(SRC_DIR)/topo.c \
   $(SRC_DIR)/frame.c \
-  $(SRC_DIR)/util.c
-
+  $(SRC_DIR)/util.c \
+  $(SRC_DIR)/topology/gro_parse.c \
+  $(SRC_DIR)/topology/gro_channel.c \
+  $(SRC_DIR)/topology/gro_print.c
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(BUILD)/%.o)
 DEPS := $(OBJS:.o=.d)
 

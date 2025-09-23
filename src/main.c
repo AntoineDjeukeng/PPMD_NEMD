@@ -1,12 +1,17 @@
 #include "pc.h"
 #include <stdio.h>
 
-static void start_threads(pthread_t *threads)
+
+static void start_threads(pthread_t *threads, int ac, char **av)
 {
     int i;
     static int cidx[NUM_CONSUMERS];
-
-    if (pthread_create(&threads[0], NULL, producer, NULL) != 0)
+	if (ac < 2) {
+		fprintf(stderr,"Usage: %s file.gro [channel.json]\n", av[0]);
+		return ;
+	}
+    //parse av to produce
+    if (pthread_create(&threads[0], NULL, producer, av) != 0)
         perror("producer");
     i = 1;
     while (i < THREAD_COUNT) {
@@ -28,13 +33,15 @@ static void join_threads(pthread_t *threads)
     }
 }
 
-int main(void)
+int main(int ac, char **av)
 {
     pthread_t threads[THREAD_COUNT];
 
     set_stdout_line_buffered();
     ring_init();
-    start_threads(threads);
+    // (void)ac; (void)av;
+
+    start_threads(threads, ac, av);
     join_threads(threads);
     return 0;
 }

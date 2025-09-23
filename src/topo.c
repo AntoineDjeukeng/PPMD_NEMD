@@ -5,9 +5,9 @@
 static pthread_mutex_t g_topo_mtx = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t  g_topo_cv  = PTHREAD_COND_INITIALIZER;
 static int             g_topo_ready = 0;
-static t_frame0        g_topo;
+static t_topo        g_topo;
 
-static void topo_init_defaults(t_frame0 *t)
+static void topo_init_defaults(t_topo *t)
 {
     int i;
 
@@ -20,10 +20,10 @@ static void topo_init_defaults(t_frame0 *t)
         i++;
     }
     t->x = NULL;
-    t->sum.v = 0.0;
+    memset(&t->sum, 0, sizeof(t->sum));
 }
 
-void topo_build_from_traj(t_frame0 *dst, const t_frame *src)
+void topo_build_from_traj(t_topo *dst, const t_frame *src)
 {
     int n;
     int i;
@@ -48,10 +48,10 @@ void topo_build_from_traj(t_frame0 *dst, const t_frame *src)
             i++;
         }
     }
-    dst->sum.v = (double)n;
+    (void)n;
 }
 
-void topo_copy(t_frame0 *dst, const t_frame0 *src)
+void topo_copy(t_topo *dst, const t_topo *src)
 {
     int n;
     int i;
@@ -77,7 +77,7 @@ void topo_copy(t_frame0 *dst, const t_frame0 *src)
     }
 }
 
-void topo_free(t_frame0 *t)
+void topo_free(t_topo *t)
 {
     if (!t)
         return;
@@ -85,7 +85,7 @@ void topo_free(t_frame0 *t)
     t->x = NULL;
 }
 
-void topo_publish_global(const t_frame0 *src)
+void topo_publish_global(const t_topo *src)
 {
     pthread_mutex_lock(&g_topo_mtx);
     topo_free(&g_topo);
@@ -95,7 +95,7 @@ void topo_publish_global(const t_frame0 *src)
     pthread_mutex_unlock(&g_topo_mtx);
 }
 
-void topo_wait_global_copy(t_frame0 *dst)
+void topo_wait_global_copy(t_topo *dst)
 {
     pthread_mutex_lock(&g_topo_mtx);
     while (!g_topo_ready)
@@ -104,3 +104,28 @@ void topo_wait_global_copy(t_frame0 *dst)
     pthread_mutex_unlock(&g_topo_mtx);
 }
 
+int topo_is_ready(void)
+{
+    int r;
+    pthread_mutex_lock(&g_topo_mtx);
+    r = g_topo_ready;
+    pthread_mutex_unlock(&g_topo_mtx);
+    return r;
+}
+
+
+
+int topo_count_mols(const t_topo *t)
+{
+    int i;
+    int tot;
+    if (!t) return 0;
+    tot = 0;
+    i = 0;
+    while (i < t->sum.nsets) {
+        if (t->sum.sets[i].nmol > 0)
+            tot += t->sum.sets[i].nmol;
+        i = i + 1;
+    }
+    return tot;
+}

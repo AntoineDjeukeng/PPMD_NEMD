@@ -23,7 +23,7 @@ static void split_range(int total, int parts, int idx, int *start, int *count)
     *count = c;
 }
 
-static void consume_once_subset(int start, int count, const t_frame0 *topo, unsigned *last_gen)
+static void consume_once_subset(int start, int count, const t_topo *topo, unsigned *last_gen)
 {
     int k;
     const t_frame *f;
@@ -57,18 +57,22 @@ static void consume_once_subset(int start, int count, const t_frame0 *topo, unsi
 void* consumer(void *arg)
 {
     int idx;
-    t_frame0 topo;
-    int start;
-    int count;
+    t_topo topo;
     unsigned seen_gen;
 
     idx = arg ? *(int*)arg : 0;
     topo_wait_global_copy(&topo);
-    split_range(topo.natoms, NUM_CONSUMERS, idx, &start, &count);
+    gro_print_essentials(&topo);
+    split_range(topo_count_mols(&topo), NUM_CONSUMERS, idx, &topo.start_mol, &topo.count_mol);
     seen_gen = 0;
-    while (1) {
-        consume_once_subset(start, count, &topo, &seen_gen);
+    int i = 0;
+    while (1) 
+    {
+        i++;
+        printf("C%d processing molecules %d to %d\n", idx, topo.start_mol, topo.start_mol + topo.count_mol - 1);
+        consume_once_subset(topo.start_mol, topo.count_mol, &topo, &seen_gen);
         sleep_ms(50);
+        if (i == 2) break;
     }
     return NULL;
 }
